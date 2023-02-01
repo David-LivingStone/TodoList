@@ -1,0 +1,61 @@
+﻿@model IEnumerable<TodoListApp.Models.TodoListModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+@if (User.IsInRole("Admin"))
+{
+    <h3>All ToDo List Created</h3>
+}else{
+<h3>My Todo List</h3>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Guid">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Guid">Details</a> 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Admin")) { 
+                        
+                         <a asp-action="Delete" asp-route-id="@item.Guid">Delete</a> 
+                        }
+                    }
+                    
+                    
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
